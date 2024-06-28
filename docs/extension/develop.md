@@ -83,6 +83,48 @@ protected $menu = [
     ],
 ];
 ```
+### 字典
+
+在`src/BannerServiceProvider.php` 中添加 `$dict` 属性:
+
+```php
+protected $dict = [
+    [
+        'key' => 'goods.state',
+        'value' => '商品状态',
+        'parent'=>'',
+    ],
+    [
+        'parent'=>'goods.state',
+        'key'=>'enable',
+        'value'=>'启用'
+    ],
+    [
+        'parent'=>'goods.state',
+        'key'=>'disable',
+        'value'=>'禁用'
+    ],
+];
+public function register()
+{
+    /**
+     * 监听启用禁用 事件
+     */
+    Event::listen(ExtensionChanged::class, function (ExtensionChanged $event) {
+        if ($event->name === $this->getName() && $event->type == 'enable') {
+            $this->refreshMenu();
+            if (method_exists($this, 'refreshDict')) {
+                $this->refreshDict();
+            }
+        } else if ($event->name === $this->getName() && $event->type == 'disable') {
+            $this->flushMenu();
+            if (method_exists($this, 'flushDict')) {
+                $this->flushDict();
+            }
+        }
+    });
+}
+```
 
 ### 语言包
 
