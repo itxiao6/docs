@@ -112,12 +112,10 @@ public function register()
      */
     Event::listen(ExtensionChanged::class, function (ExtensionChanged $event) {
         if ($event->name === $this->getName() && $event->type == 'enable') {
-            $this->refreshMenu();
             if (method_exists($this, 'refreshDict')) {
                 $this->refreshDict();
             }
         } else if ($event->name === $this->getName() && $event->type == 'disable') {
-            $this->flushMenu();
             if (method_exists($this, 'flushDict')) {
                 $this->flushDict();
             }
