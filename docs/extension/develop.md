@@ -84,6 +84,38 @@ protected $menu = [
 ];
 ```
 
+
+### 字典 `如果使用字典组件时`
+
+在`src/BannerServiceProvider.php` 中添加 `$dict` 属性:
+
+```php
+protected $dict = [
+    [
+        'key' => 'filesystem.driver',
+        'value' => '文件系统驱动',
+        'keys' => [
+            [
+                'key' => 'local',
+                'value' => '本地存储'
+            ],
+            [
+                'key' => 'kodo',
+                'value' => '七牛云kodo'
+            ],
+            [
+                'key' => 'cos',
+                'value' => '腾讯云COS'
+            ],
+            [
+                'key' => 'oss',
+                'value' => '阿里云OSS'
+            ]
+        ]
+    ]
+];
+```
+
 ### 语言包
 
 在扩展目录下创建 `lang` 目录, 逻辑与laravel的语言包一致, 例如:
