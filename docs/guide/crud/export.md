@@ -51,6 +51,7 @@ protected function exportFileName()
 ```php
 // 在控制器中重写 exportMap 方法, $row 是数组格式
 // 该方法会被循环调用, 请不要在里面执行 IO 操作
+// 如果需要导出关联查询信息则，$row是二维数组。直接获取二维数组 例如 ['ID'=>$row['id'],'操作人'=>$row['admin_user']['name']]
 protected function exportMap($row)
 {
     return [
@@ -80,7 +81,7 @@ protected function export()
 
     // listQuery() 为列表查询条件，与获取列表数据一致
     $query = $this->service->listQuery()
-        ->when($ids, fn($query) => $query->whereIn($this->service->primaryKey(), explode(',', $ids)));
+            ->when($ids, fn($query) => $query->whereIn($this->service->getModel()->getTable() . '.' . $this->service->primaryKey(), explode(',', $ids)));
 
     try {
         fastexcel($query->get())->export(storage_path('app/' . $path), fn($row) => $this->exportMap($row));
